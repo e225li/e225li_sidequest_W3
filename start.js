@@ -8,74 +8,69 @@
 // ------------------------------------------------------------
 // Start screen visuals
 // ------------------------------------------------------------
+
+// Button data
+const startBtn = {
+  x: 400,
+  y: 550,
+  w: 260,
+  h: 80,
+  label: "ENTER THE ROOM",
+};
+
+const instrBtn = {
+  x: 400,
+  y: 650,
+  w: 260,
+  h: 80,
+  label: "INSTRUCTIONS",
+};
+
+// ------------------------------------------------------------
 // drawStart() is called from main.js only when:
 // currentScreen === "start"
 function drawStart() {
   // Background colour for the start screen
-  background(180, 225, 220); // soft teal background
+  background(20, 22, 30); // soft teal background
+
+  // Soft “spotlight” glow
+  noStroke();
+  fill(80, 120, 255, 35);
+  ellipse(width / 2, 260, 520, 460);
 
   // ---- Title text ----
-  fill(30, 50, 60);
-  textSize(46);
+  fill(240);
+  textSize(44);
   textAlign(CENTER, CENTER);
-  text("Win or Lose", width / 2, 180);
+  text("THE STUDY ROOM", width / 2, 140);
 
-  // ---- Buttons (data only) ----
-  // These objects store the position/size/label for each button.
-  // Using objects makes it easy to pass them into drawButton()
-  // and also reuse the same information for hover checks.
-  const startBtn = {
-    x: width / 2,
-    y: 320,
-    w: 240,
-    h: 80,
-    label: "START",
-  };
+  // Subtitle
+  fill(200);
+  textSize(18);
+  text("One choice. Two outcomes.", width / 2, 205);
 
-  const instrBtn = {
-    x: width / 2,
-    y: 430,
-    w: 240,
-    h: 80,
-    label: "INSTRUCTIONS",
-  };
+  // Desk icon (simple shapes)
+  drawDeskIcon(width / 2, 305);
 
-  // Draw both buttons
-  drawButton(startBtn);
-  drawButton(instrBtn);
+  // Draw buttons
+  drawStartButton(startBtn, "primary");
+  drawStartButton(instrBtn, "secondary");
 
-  // ---- Cursor feedback ----
-  // If the mouse is over either button, show a hand cursor
-  // so the player knows it is clickable.
-  const over = isHover(startBtn) || isHover(instrBtn);
-  cursor(over ? HAND : ARROW);
+  // Cursor feedback
+  cursor(isHover(startBtn) || isHover(instrBtn) ? HAND : ARROW);
 }
 
 // ------------------------------------------------------------
-// Mouse input for the start screen
+// Mouse input for start screen
 // ------------------------------------------------------------
-// Called from main.js only when currentScreen === "start"
 function startMousePressed() {
-  // For input checks, we only need x,y,w,h (label is optional)
-  const startBtn = { x: width / 2, y: 320, w: 240, h: 80 };
-  const instrBtn = { x: width / 2, y: 430, w: 240, h: 80 };
-
-  // If START is clicked, go to the game screen
-  if (isHover(startBtn)) {
-    currentScreen = "game";
-  }
-  // If INSTRUCTIONS is clicked, go to the instructions screen
-  else if (isHover(instrBtn)) {
-    currentScreen = "instr";
-  }
+  if (isHover(startBtn)) currentScreen = "game";
+  else if (isHover(instrBtn)) currentScreen = "instr";
 }
 
 // ------------------------------------------------------------
-// Keyboard input for the start screen
+// Keyboard input for start screen
 // ------------------------------------------------------------
-// Provides keyboard shortcuts:
-// - ENTER starts the game
-// - I opens instructions
 function startKeyPressed() {
   if (keyCode === ENTER) {
     currentScreen = "game";
@@ -87,51 +82,59 @@ function startKeyPressed() {
 }
 
 // ------------------------------------------------------------
-// Helper: drawButton()
+// Helper: drawStartButton()
+// Simple hover feedback using conditionals
 // ------------------------------------------------------------
-// This function draws a button and changes its appearance on hover.
-// It does NOT decide what happens when you click the button.
-// That logic lives in startMousePressed() above.
-//
-// Keeping drawing separate from input/logic makes code easier to read.
-function drawButton({ x, y, w, h, label }) {
+function drawStartButton(btn, type) {
   rectMode(CENTER);
 
-  // Check if the mouse is over the button rectangle
-  const hover = isHover({ x, y, w, h });
+  const hover = isHover(btn);
 
   noStroke();
-
-  // ---- Visual feedback (hover vs not hover) ----
-  // This is a common UI idea:
-  // - normal state is calmer
-  // - hover state is brighter + more “active”
-  //
-  // We also add a shadow using drawingContext (p5 lets you access the
-  // underlying canvas context for effects like shadows).
-  if (hover) {
-    fill(255, 200, 150, 220); // warm coral on hover
-
-    // Shadow settings (only when hovered)
-    drawingContext.shadowBlur = 20;
-    drawingContext.shadowColor = color(255, 180, 120);
+  if (type === "primary") {
+    if (hover) fill(180, 220, 255, 240);
+    else fill(120, 180, 255, 190);
   } else {
-    fill(255, 240, 210, 210); // soft cream base
-
-    // Softer shadow when not hovered
-    drawingContext.shadowBlur = 8;
-    drawingContext.shadowColor = color(220, 220, 220);
+    if (hover) fill(255, 245, 220, 220);
+    else fill(255, 245, 220, 160);
   }
 
-  // Draw the rounded rectangle button
-  rect(x, y, w, h, 14);
+  rect(btn.x, btn.y, btn.w, btn.h, 16);
 
-  // Important: reset shadow so it does not affect other drawings
-  drawingContext.shadowBlur = 0;
-
-  // Draw the label text on top of the button
-  fill(40, 60, 70);
-  textSize(28);
+  fill(15, 20, 30);
+  textSize(type === "primary" ? 22 : 20);
   textAlign(CENTER, CENTER);
-  text(label, x, y);
+  text(btn.label, btn.x, btn.y);
+}
+
+function drawDeskIcon(cx, cy) {
+  rectMode(CENTER);
+  noStroke();
+
+  // Desk surface
+  fill(60, 70, 95);
+  rect(cx, cy + 40, 300, 22, 10);
+
+  // Desk legs
+  fill(45, 55, 80);
+  rect(cx - 120, cy + 75, 18, 70, 8);
+  rect(cx + 120, cy + 75, 18, 70, 8);
+
+  // Book
+  fill(200, 210, 235);
+  rect(cx - 40, cy + 10, 70, 40, 6);
+
+  // Lamp stem
+  fill(120, 130, 160);
+  rect(cx + 60, cy - 5, 10, 70, 6);
+
+  // Lamp head glow
+  fill(255, 220, 140);
+  ellipse(cx + 60, cy - 45, 30, 30);
+
+  // Small label
+  fill(190);
+  textAlign(CENTER, CENTER);
+  textSize(14);
+  text("STAY QUIET", cx, cy + 120);
 }

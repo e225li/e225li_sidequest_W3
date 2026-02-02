@@ -22,6 +22,7 @@
 // We store the “name” of the current screen as a string.
 // Only one screen should be active at a time.
 let currentScreen = "start"; // "start" | "instr" | "game" | "win" | "lose"
+let endingText = ""; // Text to show on win/lose screens
 
 // ------------------------------
 // setup() runs ONCE at the beginning

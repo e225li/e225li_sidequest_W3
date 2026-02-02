@@ -14,19 +14,29 @@
 // drawWin() is called from main.js
 // only when currentScreen === "win"
 function drawWin() {
-  // Green-tinted background to communicate success
-  background(200, 255, 200);
+  // background to communicate success
+  background(10, 20, 18);
 
-  fill(0);
+  noStroke();
+  fill(120, 255, 190, 20);
+  ellipse(width / 2, 280, 650, 560);
+
+  fill(230);
   textAlign(CENTER, CENTER);
 
   // Main success message
-  textSize(40);
-  text("You Win!", width / 2, 300);
+  fill(200);
+  textSize(52);
+  text("YOU MADE IT", width / 2, 220);
+
+  fill(200);
+  textSize(18);
+  text(endingText, width / 2, 330);
 
   // Instruction text
-  textSize(20);
-  text("Click or press R to return to Start.", width / 2, 360);
+  fill(180);
+  textSize(16);
+  text("Click or press R to return to Start.", width / 2, 680);
 }
 
 // ------------------------------------------------------------

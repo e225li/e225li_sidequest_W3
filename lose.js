@@ -11,18 +11,29 @@
 // only when currentScreen === "lose"
 function drawLose() {
   // Red-tinted background to communicate failure
-  background(255, 210, 210);
+  background(25, 10, 12);
 
   fill(0);
   textAlign(CENTER, CENTER);
 
+  noStroke();
+  fill(255, 120, 140, 18);
+  ellipse(width / 2, 280, 650, 560);
+
   // Main message
-  textSize(40);
-  text("You Lose!", width / 2, 300);
+  fill(230);
+  textAlign(CENTER, CENTER);
+  textSize(52);
+  text("TOO LOUD", width / 2, 220);
+
+  fill(200);
+  textSize(18);
+  text(endingText, width / 2, 330);
 
   // Instruction text
-  textSize(20);
-  text("Click or press R to return to Start.", width / 2, 360);
+  fill(180);
+  textSize(16);
+  text("Click or press R to return to Start.", width / 2, 680);
 }
 
 // ------------------------------
